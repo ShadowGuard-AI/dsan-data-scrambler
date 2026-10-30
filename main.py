@@ -1,5 +1,6 @@
 import argparse
 import logging
+import sys
 import pandas as pd
 import random
 import os
@@ -84,6 +85,9 @@ def scramble_columns(filename: str, columns: List[int]) -> pd.DataFrame:
     """
     try:
         df = pd.read_csv(filename)
+        # Each column is shuffled on its own: that is the whole mechanism.
+        # The values inside a column keep their distribution, while the
+        # row linkage between columns is what gets destroyed.
         for col_index in columns:
             col_name = df.columns[col_index]
             col_values = df[col_name].tolist()
@@ -118,10 +122,13 @@ def main() -> None:
 
     except FileNotFoundError as e:
         logging.error(f"File error: {e}")
+        sys.exit(1)
     except ValueError as e:
         logging.error(f"Input error: {e}")
+        sys.exit(1)
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
