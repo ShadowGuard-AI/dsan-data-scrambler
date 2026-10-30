@@ -1,3 +1,5 @@
+![Banner](banner.png)
+
 # dsan-data-scrambler
 A command-line utility to randomly shuffle column values within CSV files, ensuring that relationships within a single column are preserved but relationships between columns are broken, thus providing anonymization for data analysis. It takes filename and list of column indices to scramble. - Focused on Tools for anonymizing and de-identifying sensitive data within datasets or text files, focusing on generating realistic fake data while preserving data structure.
 
