@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 import random
 import os
+from pathlib import Path
 from typing import List
 
 
@@ -109,6 +110,9 @@ def main() -> None:
     )
 
     try:
+        if args.output and Path(args.output).resolve() == Path(args.filename).resolve():
+            logging.error("Output file must not be the input file when given with -o. Choose a different output file, or run without -o to use the documented overwrite of the input file.")
+            sys.exit(1)
         columns_indices = [int(c) for c in args.columns.split(",")]
         validate_input(args.filename, columns_indices)
 

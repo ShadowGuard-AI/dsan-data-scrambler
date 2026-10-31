@@ -17,3 +17,6 @@ A command-line utility to randomly shuffle column values within CSV files, ensur
 
 ## License
 Copyright (c) ShadowStrikeHQ
+
+## Notes
+- An explicit -o output that is the input file is refused at exit 1, in the same spelling, a ./ spelling, and through a symlink. Running without -o still overwrites the input file, as documented above.
