@@ -61,6 +61,12 @@ def validate_input(filename: str, columns: List[int]) -> None:
         raise ValueError("No columns provided to scramble.")
 
     try:
+        # Validation reads the whole file just to count its columns, and
+        # scramble_columns then reads it again in full. A header only read
+        # would answer the question; as written, a large file is parsed
+        # twice per run, and the file could in principle change between
+        # the two reads, so the columns validated are not provably the
+        # columns scrambled.
         df = pd.read_csv(filename)
         num_columns = len(df.columns)
         for col in columns:
@@ -90,6 +96,13 @@ def scramble_columns(filename: str, columns: List[int]) -> pd.DataFrame:
         # The values inside a column keep their distribution, while the
         # row linkage between columns is what gets destroyed.
         for col_index in columns:
+            # Columns are picked by position but read by name. Listing the
+            # same index twice shuffles that column twice, which changes
+            # nothing about the guarantee, only the result. The shuffle is
+            # unseeded and there is no seed option: a run cannot be
+            # reproduced, and a shuffle can also leave a short column in
+            # its original order by chance, with nothing reporting that
+            # the column came out effectively unscrambled.
             col_name = df.columns[col_index]
             col_values = df[col_name].tolist()
             random.shuffle(col_values)
